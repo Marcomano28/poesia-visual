@@ -1,0 +1,365 @@
+:root {
+  /* MODO OSCURO (Por defecto) - Abismo y Oro Vivo */
+  --bg-color: #030303;
+  --text-primary: #f0eadd;
+  --text-accent: #c9a84c;
+  --card-glass: rgba(20, 18, 18, 0.4);
+  --card-border: rgba(201, 168, 76, 0.2);
+  --overlay-bg: rgba(0, 0, 0, 0.95);
+  --glass-panel: rgba(10, 8, 6, 0.5);
+}
+
+[data-theme="light"] {
+  /* MODO CLARO - Mármol, Niebla y Tinta */
+   --font-serif: "Cormorant Garamond", serif;
+  --font-display: "Cinzel", serif;
+  
+  --color-paper: #F9F8F6;
+  --color-ink: #2C3E50;
+  --color-accent: #8B7355;
+  --bg-color: #f4f1eb;
+  --text-primary: #1a1a1a;
+  --text-accent: #8b7355;
+  --card-glass: rgba(255, 255, 255, 0.6);
+  --card-border: rgba(139, 115, 85, 0.3);
+  --overlay-bg: rgba(244, 241, 235, 0.95);
+  --glass-panel: rgba(255, 255, 255, 0.4);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: 'EB Garamond', serif;
+  overflow-x: hidden;
+  transition: background-color 0.8s ease, color 0.8s ease;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+.watercolor-bg {
+   position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.25;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  display: none;
+}
+
+[data-theme="light"] .watercolor-bg {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(212, 224, 229, 0.7) 0%, transparent 60%),
+    radial-gradient(circle at 80% 40%, rgba(235, 223, 211, 0.7) 0%, transparent 60%),
+    radial-gradient(circle at 50% 80%, rgba(225, 230, 218, 0.7) 0%, transparent 60%);
+  filter: blur(60px);
+  pointer-events: none;
+}
+.paper-texture {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.25;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+.app-header {
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.app-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  /* Efecto de texto etéreo */
+  text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  z-index: 2;
+}
+
+.app-subtitle {
+  font-style: italic;
+  letter-spacing: 0.4em;
+  font-size: 0.9rem;
+  color: var(--text-accent);
+  margin-top: -10px;
+  z-index: 2;
+}
+
+/* =========================================
+   3. LAS TARJETAS: PORTALES DE CRISTAL
+   ========================================= */
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(2rem, 5vw, 4rem);
+  /* padding: 0 2rem 10rem; */
+  perspective: 1000px; /* Necesario para el efecto 3D profundo */
+}
+
+.tarot-card {
+  position: relative;
+  width: clamp(280px, 25vw, 360px);
+  aspect-ratio: 3 / 4;
+  border-radius: 2px; /* Bordes rectos y afilados, más elegante */
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--card-glass);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+  transform: translateZ(0);
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.7s ease;
+}
+
+.tarot-card:hover {
+  transform: translateY(-20px) scale(1.03) rotateX(5deg);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 40px var(--card-border);
+}
+
+/* Efecto Reflejo (Glare) al pasar el ratón */
+.tarot-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -150%;
+  width: 50%; height: 100%;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-25deg);
+  z-index: 10;
+  transition: left 0s; /* Evita que se anime al quitar el hover */
+}
+
+.tarot-card:hover::before {
+  left: 200%;
+  transition: left 1.2s ease-in-out;
+}
+
+.card-image {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+  filter: grayscale(80%) contrast(1.2);
+  transition: all 1s ease;
+}
+
+.tarot-card:hover .card-image {
+  opacity: 0.9;
+  filter: grayscale(0%) contrast(1.1);
+  transform: scale(1.1); /* Efecto respiración */
+}
+
+.card-text {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 2.5rem 2rem;
+  background: linear-gradient(to top, var(--bg-color) 0%, transparent 100%);
+  z-index: 2;
+  transform: translateY(20px);
+  opacity: 0.8;
+  transition: all 0.5s ease;
+}
+
+.tarot-card:hover .card-text {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.card-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.2em;
+}
+
+/* =========================================
+   4. LA EXPERIENCIA CINEMÁTICA (OVERLAY)
+   ========================================= */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  z-index: 100;
+  display: flex;
+  overflow: hidden;
+  opacity: 0;
+  animation: fade-in 1s forwards;
+}
+
+.overlay-content {
+  opacity: 0;
+  animation: fade-in 0.8s 1.5s forwards; /* espera 1.5s antes de aparecer */
+}
+
+@keyframes fade-in { to { opacity: 1; } }
+
+.overlay::before,
+.overlay::after {
+  content: '';
+  position: fixed;
+  left: 0; right: 0;
+  height: 8vh;
+  background: black;
+  z-index: 50;
+  transition: transform 1s cubic-bezier(0.8, 0, 0.2, 1);
+}
+.overlay::before { top: 0; transform: translateY(-100%); }
+.overlay::after { bottom: 0; transform: translateY(100%); }
+
+/* Las franjas entran con una clase que puedes poner desde JS al abrir */
+.overlay.is-open::before { transform: translateY(0); }
+.overlay.is-open::after { transform: translateY(0); }
+
+/* Contenedor Horizontal */
+.poem-track {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+/* Cada "página" o verso */
+.poem-slide {
+  position: relative;
+  min-width: 100vw;
+  height: 100vh;
+  scroll-snap-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.background-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  z-index: 1;
+}
+
+/* El Contenedor del Verso (Cristal Flotante) */
+.verse-glass-panel {
+  position: relative;
+  z-index: 10;
+  padding: 3rem 4rem;
+  max-width: 800px;
+  background: var(--glass-panel); /* Translúcido */
+  backdrop-filter: blur(15px); /* Desenfoque del canvas de atrás */
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  
+  /* Animación de entrada: Emerge del desenfoque */
+  opacity: 0;
+  filter: blur(20px);
+  transform: translateY(30px) scale(0.95);
+  animation: emerge-verse 1.5s 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes emerge-verse {
+  to { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
+}
+
+.overlay-verse {
+  font-family: 'EB Garamond', serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-primary);
+  /* Interacción con la luz */
+  text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.overlay-close {
+  position: fixed;
+  top: 3vh; right: 3vw;
+  z-index: 110;
+  background: transparent;
+  border: none;
+  color: var(--text-accent);
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  letter-spacing: 0.3em;
+  cursor: pointer;
+  padding: 1rem;
+  text-transform: uppercase;
+  overflow: hidden;
+}
+
+/* Botón de cierre con línea subrayada animada */
+.overlay-close::after {
+  content: '';
+  position: absolute;
+  bottom: 10px; left: 0;
+  width: 100%; height: 1px;
+  background: var(--text-accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+.overlay-close:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+.theme-toggle {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 200;
+  background: none;
+  border: 1px solid var(--card-border);
+  color: var(--text-accent);
+  font-size: 1.2rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  background: var(--card-glass);
+  border-color: var(--text-accent);
+}
+.overlay-open .theme-toggle {
+  display: none;
+}
