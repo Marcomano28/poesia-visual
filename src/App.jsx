@@ -19,7 +19,7 @@ export default function App() {
       title: 'La Lluvia',
       subtitle: 'II · El Umbral',
       images: ['/images/Card-1/img01.jpg', '/images/Card-1/img02.jpg', '/images/Card-1/img03.jpg', '/images/Card-1/img04.jpg', '/images/Card-1/img05.jpg',, '/images/Card-1/img06.jpg',
-               '/images/Card-1/img07.jpg', '/images/Card-1/img08.jpg', '/images/Card-1/img09.jpg', '/images/Card-1/img10.jpg', '/images/Card-1/img11.jpg', '/images/Card-1/img12.jpg'],
+               '/images/Card-1/img07.jpg', '/images/Card-1/img08.jpg', '/images/Card-1/img09.jpg', '/images/Card-1/img10.jpg', '/images/Card-1/img11.jpg', '/images/Card-1/img12.jpg','/images/Card-1/img13.jpg'],
       effect: 'rain',
       verse: 'Las gotas corren como el tiempo, borrando los recuerdos.',
     },

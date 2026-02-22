@@ -59,16 +59,23 @@ function loadTex(gl, url) {
 }
 
 // ── Minimal mat4 (sin dependencias externas) ──────────────────────────────────
+// function mat4Id() {
+//   return new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1])
+// }
+// function mat4Persp(fovy, aspect, near, far) {
+//   const f  = 1.0 / Math.tan(fovy / 2)
+//   const nf = 1   / (near - far)
+//   const m  = new Float32Array(16)
+//   m[0]=f/aspect; m[5]=f; m[10]=(far+near)*nf; m[11]=-1; m[14]=2*far*near*nf
+//   return m
+// }
 function mat4Id() {
   return new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1])
 }
-function mat4Persp(fovy, aspect, near, far) {
-  const f  = 1.0 / Math.tan(fovy / 2)
-  const nf = 1   / (near - far)
-  const m  = new Float32Array(16)
-  m[0]=f/aspect; m[5]=f; m[10]=(far+near)*nf; m[11]=-1; m[14]=2*far*near*nf
-  return m
+function mat4Ortho() {
+  return new Float32Array([1,0,0,0, 0,1,0,0, 0,0,-1,0, 0,0,0,1])
 }
+
 function mat4Trans(m, tx, ty, tz) {
   const o = new Float32Array(m)
   o[12] = m[0]*tx + m[4]*ty + m[8]*tz  + m[12]
@@ -160,8 +167,10 @@ export default function RainyEffect({ images }) {
 
     // Matrices
     const fovy = 35 * Math.PI / 180
-    let projMat = mat4Persp(fovy, canvas.clientWidth / canvas.clientHeight, 0.1, 10.0)
-    const mvMat  = mat4Trans(mat4Id(), 0, 0, -2)
+    // let projMat = mat4Persp(fovy, canvas.clientWidth / canvas.clientHeight, 0.1, 10.0)
+    // const mvMat  = mat4Trans(mat4Id(), 0, 0, -2)
+    let projMat = mat4Ortho()
+    const mvMat = mat4Id()
     const imgMat = mat4Scale(mat4Id(), 1.0, 1.1, 1.0)
 
     gl.useProgram(rainProg)
@@ -205,7 +214,8 @@ export default function RainyEffect({ images }) {
       }
       gl.bindFramebuffer(gl.FRAMEBUFFER, null)
       gl.viewport(0, 0, w, h)
-      projMat = mat4Persp(fovy, w/h, 0.1, 10.0)
+      // projMat = mat4Persp(fovy, w/h, 0.1, 10.0)
+      projMat = mat4Ortho()
       gl.useProgram(rainProg)
       gl.uniformMatrix4fv(gl.getUniformLocation(rainProg, 'uPMatrix'), false, projMat)
       gl.uniform2f(gl.getUniformLocation(rainProg, 'uReso'), w, h)
