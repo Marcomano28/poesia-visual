@@ -106,6 +106,7 @@ export const rainFS = [
   '  float a    = N12(uv) * PI2;',
   '  blur *= .0002;',
   '  vec2 uvDisp = uv + drops.xy * dist;',
+  '       uvDisp.y = (uvDisp.y - 0.525) * 0.9 + 0.5;',
   '  for(int n = 0; n < 25; n++){',
   '    vec2  off = vec2(sin(a), cos(a)) * blur;',
   '    float d   = fract(sin((float(n) + 1.) * 546.) * 5424.);',
