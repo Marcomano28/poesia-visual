@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { trailVS, trailFS, rainVS, rainFS } from './rainShaders.js'
+import MirrorHint from '../MirrorHint.jsx'
 
 // ── GL helpers ────────────────────────────────────────────────────────────────
 
@@ -287,9 +288,9 @@ export default function RainyEffect({ images }) {
   }, [images])
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block' }}
-    />
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+    <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block' }} />
+    <MirrorHint />
+    </div>
   )
 }
