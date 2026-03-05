@@ -31,12 +31,14 @@ function FingerHint({ visible }) {
       }} />
 
       <style>{`
-        @keyframes swipe {
-           0%   { transform: translateX(0px);  opacity: 0.9; }
-           40%  { transform: translateX(40px); opacity: 0.5; }
-           55%  { transform: translateX(40px); opacity: 0.5; }  /* pausa a la derecha */
-           95%  { transform: translateX(0px);  opacity: 0.9; }
-           100% { transform: translateX(0px);  opacity: 0.9; }  /* pausa a la izquierda */
+      @keyframes swipe {
+          0%   { transform: translateX(0px)   translateY(0px)  rotate(0deg);   opacity: 1.0; }
+          30%  { transform: translateX(25px)  translateY(-4px) rotate(-8deg);  opacity: 0.9; }
+          50%  { transform: translateX(60px)  translateY(0px)  rotate(-5deg);  opacity: 0.7; }
+          55%  { transform: translateX(60px)  translateY(0px)  rotate(-5deg);  opacity: 0.5; }
+          75%  { transform: translateX(15px)  translateY(3px)  rotate(3deg);   opacity: 0.7; }
+          95%  { transform: translateX(0px)   translateY(0px)  rotate(0deg);   opacity: 0.9; }
+          100% { transform: translateX(0px)   translateY(0px)  rotate(0deg);   opacity: 1.0; }
         }
         @keyframes trailPulse {
           0%, 100% { opacity: 0.2; width: 28px; }
