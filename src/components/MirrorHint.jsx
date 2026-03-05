@@ -18,14 +18,7 @@ function FingerHint({ visible }) {
     }}>
       {/* Finger SVG */}
       <div style={{ animation: 'swipe 2s ease-in-out infinite' }}>
-        <svg width="36" height="60" viewBox="0 0 36 60" fill="none">
-          {/* Palm */}
-          <rect x="10" y="28" width="16" height="22" rx="8" fill="rgba(255,255,255,0.55)" />
-          {/* Finger */}
-          <rect x="14" y="8" width="8" height="26" rx="4" fill="rgba(255,255,255,0.75)" />
-          {/* Knuckle hint */}
-          <rect x="14" y="20" width="8" height="2" rx="1" fill="rgba(255,255,255,0.3)" />
-        </svg>
+        👆🏻
       </div>
 
       {/* Trail line under finger */}
