@@ -17,7 +17,7 @@ function FingerHint({ visible }) {
       pointerEvents: 'none',
     }}>
       {/* Finger SVG */}
-      <div style={{ animation: 'swipe 2s ease-in-out infinite' }}>
+      <div style={{ animation: 'swipe 2.5s ease-in-out infinite', fontSize: '42px' }}>
         👆🏻
       </div>
 
@@ -32,9 +32,11 @@ function FingerHint({ visible }) {
 
       <style>{`
         @keyframes swipe {
-          0%   { transform: translateX(-18px) rotate(-8deg); }
-          50%  { transform: translateX( 18px) rotate( 8deg); }
-          100% { transform: translateX(-18px) rotate(-8deg); }
+           0%   { transform: translateX(0px);  opacity: 0.9; }
+           40%  { transform: translateX(40px); opacity: 0.5; }
+           55%  { transform: translateX(40px); opacity: 0.5; }  /* pausa a la derecha */
+           95%  { transform: translateX(0px);  opacity: 0.9; }
+           100% { transform: translateX(0px);  opacity: 0.9; }  /* pausa a la izquierda */
         }
         @keyframes trailPulse {
           0%, 100% { opacity: 0.2; width: 28px; }
